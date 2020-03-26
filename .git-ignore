@@ -9,5 +9,5 @@
 
 # Intellij Files #
 ######################
-.idea/
+.idea/*
 TspiSimulator.iml
