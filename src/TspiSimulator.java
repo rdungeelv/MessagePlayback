@@ -1,59 +1,40 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 public class TspiSimulator {
-
-//    private static ServerSocket serverSocket;
-//    private static Socket clientSocket;
-
+    
     public static void main(String[] args) {
         if(args.length < 2) {
             throw new IllegalArgumentException("[Full message file path] [# of times to loop file]");
         }
 
-        int loops = Integer.parseInt(args[2]);
+        int loops = Integer.parseInt(args[1]);
         File tspiDataFile = new File(args[0]);
-//        setup();
 
-        for(int i=0; i<loops; i++) {
-            try (BufferedReader br = new BufferedReader(new FileReader(tspiDataFile))) {
-                String line;
-                br.readLine(); // To skip the header of the csv
-                try {
-                    while ((line = br.readLine()) != null) {
-                        // Send the line over the server socket
+        try(DatagramSocket socket = new DatagramSocket(59090)) {
+            for (int i = 0; i < loops; i++) {
+                try (BufferedReader br = new BufferedReader(new FileReader(tspiDataFile))) {
+                    String line;
+                    br.readLine(); // To skip the header of the csv
+                    try {
+                        while ((line = br.readLine()) != null) {
+                            // Send the line over the server socket
+                            byte[] bytes = line.getBytes();
+                            DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), 59090);
+                            socket.send(packet);
+                            //System.out.println("(" + i + ") Sent line: " + line);
+                            Thread.sleep(1000);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-//        stop();
     }
-
-//    private static void setup() throws IllegalStateException {
-//        try {
-//            serverSocket = new ServerSocket(59090);
-//            clientSocket = serverSocket.accept();
-//        } catch (IOException e) {
-//            throw new IllegalStateException(e);
-//        }
-//    }
-//
-//    private static void stop() throws IllegalStateException {
-//        try {
-//            serverSocket.close();
-//            clientSocket.close();
-//        } catch (IOException e) {
-//            throw new IllegalStateException(e);
-//        }
-//    }
 
 }
