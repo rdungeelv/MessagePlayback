@@ -1,0 +1,13 @@
+# Compiled source #
+###################
+*.class
+*.exe
+
+# Logs and databases #
+######################
+*.log
+
+# Intellij Files #
+######################
+.idea/
+TspiSimulator.iml
