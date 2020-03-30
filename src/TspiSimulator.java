@@ -17,14 +17,16 @@ public class TspiSimulator {
                     String line;
                     br.readLine(); // To skip the header of the csv
                     try {
+//                        long startTime = System.currentTimeMillis();
                         while ((line = br.readLine()) != null) {
                             // Send the line over the server socket
                             byte[] bytes = line.getBytes();
                             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getLocalHost(), 59090);
                             socket.send(packet);
-                            //System.out.println("(" + i + ") Sent line: " + line);
-                            Thread.sleep(1000);
+//                            System.out.println("(" + i + ") Sent line: " + line);
+                            Thread.sleep(19);
                         }
+//                        System.out.println(System.currentTimeMillis() - startTime);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
