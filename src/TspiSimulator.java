@@ -11,7 +11,7 @@ public class TspiSimulator {
         int loops = Integer.parseInt(args[1]);
         File tspiDataFile = new File(args[0]);
 
-        try(DatagramSocket socket = new DatagramSocket(59090)) {
+        try(DatagramSocket socket = new DatagramSocket(59091)) {
             for (int i = 0; i < loops; i++) {
                 try (BufferedReader br = new BufferedReader(new FileReader(tspiDataFile))) {
                     String line;
