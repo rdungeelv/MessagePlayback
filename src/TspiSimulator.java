@@ -11,7 +11,9 @@ public class TspiSimulator {
         int loops = Integer.parseInt(args[1]);
         File tspiDataFile = new File(args[0]);
 
-        try(DatagramSocket socket = new DatagramSocket(59091)) {
+        try(DatagramSocket socket_A = new DatagramSocket(59091);
+            DatagramSocket socket_B = new DatagramSocket(59092);
+            DatagramSocket socket_C = new DatagramSocket(59093)) {
             for (int i = 0; i < loops; i++) {
                 try (BufferedReader br = new BufferedReader(new FileReader(tspiDataFile))) {
                     String line;
@@ -34,11 +36,11 @@ public class TspiSimulator {
                             byte[] bytes_B = msg_B.getBytes();
                             byte[] bytes_C = msg_C.getBytes();
                             DatagramPacket packet = new DatagramPacket(bytes_A, bytes_A.length, InetAddress.getLocalHost(), 59090);
-                            socket.send(packet);
+                            socket_A.send(packet);
                             packet = new DatagramPacket(bytes_B, bytes_B.length, InetAddress.getLocalHost(), 59090);
-                            socket.send(packet);
+                            socket_B.send(packet);
                             packet = new DatagramPacket(bytes_C, bytes_C.length, InetAddress.getLocalHost(), 59090);
-                            socket.send(packet);
+                            socket_C.send(packet);
                             System.out.println("(" + i + ") Sent line: " + line);
                             Thread.sleep(19);
                         }
